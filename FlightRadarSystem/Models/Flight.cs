@@ -8,6 +8,21 @@ namespace FlightRadarSystem.Models
     
     public class Flight
     {
+        private Aircraft aircraft;
+        private DateTime departureScheduleTime;
+        private DateTime departureActualTime;
+        private DateTime arrivalScheduleTime;
+        private DateTime arrivalActualTime;
+        private Enum.FlightStatus status;
+        private Airport departureAirport;
+        private Airport arrivalAirport;
+        private float speed;
+        private string registration;
+        private double latitude;
+        private double longitude;
+        private string icon;
+
+
         public Flight(Aircraft aircraft, DateTime departureScheduleTime, DateTime arrivalScheduleTime, Airport departureAirport, Airport arrivalAirport, string registration)
         {
             this.aircraft = aircraft;
@@ -19,14 +34,14 @@ namespace FlightRadarSystem.Models
             this.longitude = departureAirport.Longitude;
             this.registration = registration;
         }
-        private Aircraft aircraft;
+        
 
         public Aircraft Aircraft
         {
             get { return aircraft; }
             set { aircraft = value; }
         }
-        private DateTime departureScheduleTime;
+        
 
         public DateTime DepartureScheduleTime
         {
@@ -34,7 +49,7 @@ namespace FlightRadarSystem.Models
             set { departureScheduleTime = value; }
         }
 
-        private DateTime departureActualTime;
+        
 
         public DateTime DepartureActualTime
         {
@@ -42,7 +57,7 @@ namespace FlightRadarSystem.Models
             set { departureActualTime = value; }
         }
 
-        private DateTime arrivalScheduleTime;
+        
 
         public DateTime ArrivalScheduleTime
         {
@@ -50,7 +65,7 @@ namespace FlightRadarSystem.Models
             set { arrivalScheduleTime = value; }
         }
 
-        private DateTime arrivalActualTime;
+        
 
         public DateTime ArrivalActualTime
         {
@@ -58,7 +73,7 @@ namespace FlightRadarSystem.Models
             set { arrivalActualTime = value; }
         }
 
-        private Enum.FlightStatus status;
+        
 
         public Enum.FlightStatus Status
         {
@@ -66,7 +81,7 @@ namespace FlightRadarSystem.Models
             set { status = value; }
         }
 
-        private Airport departureAirport;
+        
 
         public Airport DepartureAirport
         {
@@ -74,7 +89,7 @@ namespace FlightRadarSystem.Models
             set { departureAirport = value; }
         }
 
-        private Airport arrivalAirport;
+        
 
         public Airport ArrivalAirport
         {
@@ -82,7 +97,7 @@ namespace FlightRadarSystem.Models
             set { arrivalAirport = value; }
         }
 
-        private float speed;
+        
 
         public float Speed
         {
@@ -90,7 +105,7 @@ namespace FlightRadarSystem.Models
             set { speed = value; }
         }
 
-        private string registration;
+        
 
         public string Registration
         {
@@ -98,7 +113,7 @@ namespace FlightRadarSystem.Models
             set { registration = value; }
         }
 
-        private double latitude;
+        
 
         public double Latitude
         {
@@ -106,15 +121,14 @@ namespace FlightRadarSystem.Models
             set { latitude = value; }
         }
 
-        private double longitude;
+        
 
         public double Longitude
         {
             get { return longitude; }
             set { longitude = value; }
         }
-
-        private string icon;
+        
 
         public string Icon
         {

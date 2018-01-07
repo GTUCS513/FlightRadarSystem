@@ -3,9 +3,10 @@
 @{
     var airports = (List<FlightRadarSystem.Models.Airport>)ViewData["Airports"];
     var flights = (List<FlightRadarSystem.Models.Flight>)ViewData["Flights"];
+    var aircrafts = (List<FlightRadarSystem.Models.Aircraft>)ViewData["Aircrafts"];
 }
 
-<div id="regional-sales" class="main-section-content row">
+<div id="regional-flights" class="main-section-content row">
     <div class="row">
         <h1 id="dash-logo" class="center-block">FLIGHT&#183;RADAR</h1>
     </div>
@@ -72,6 +73,11 @@
 
 
     </div>
+    <div id="aircraftsview">
+        <p>
+        @ViewBag.Message
+        <p>
+        </div>
 </div>
 
 
@@ -109,67 +115,76 @@
         {
             <text>
 
-                var marker = new google.maps.Marker({
-                    icon: '@airport.Icon',
-                    position: new google.maps.LatLng('@airport.Latitude', '@airport.Longitude', false),
-                    title: 'Whatever title',
-                });
-                marker.setMap(map);
-                google.maps.event.addDomListener(marker, 'click', function () {
-                    
-                    document.getElementById("aircraftImage").src = "/Content/Images/anadolujet.jpg";
-                    
-                    alert("I am marker " + '@airport.Country');
-                });
+        var marker = new google.maps.Marker({
+            icon: '@airport.Icon',
+            position: new google.maps.LatLng('@airport.Latitude', '@airport.Longitude', false),
+            title: 'Whatever title',
+        });
+        marker.setMap(map);
+        google.maps.event.addDomListener(marker, 'click', function () {
+
+            document.getElementById("aircraftImage").src = "/Content/Images/anadolujet.jpg";
+
+            alert("I am marker " + '@airport.Country');
+        });
         </text>
         }
 
-         @foreach(var flight in flights)
+        @foreach(var flight in flights)
         {
             <text>
 
-                var marker = new google.maps.Marker({
-                    icon: "/airplane.png",
-                    position: new google.maps.LatLng('@flight.Latitude', '@flight.Longitude', false),
-                    title: 'Whatever title',
-                });
+        var marker = new google.maps.Marker({
+            icon: "/airplane.png",
+            position: new google.maps.LatLng('@flight.Latitude', '@flight.Longitude', false),
+            title: 'Whatever title',
+        });
         marker.setMap(map);
-            google.maps.event.addDomListener(marker, 'click', function () {
-                    
-                document.getElementById("aircraftImage").src = "/Content/Images/" + '@flight.Aircraft.ImageName';
-                document.getElementById("airportOrigin").textContent = '@flight.DepartureAirport.AirportName';
-                document.getElementById("airportDestination").textContent = '@flight.ArrivalAirport.AirportName';
-                document.getElementById("departureScheduled").textContent = '@flight.DepartureScheduleTime';
-                document.getElementById("arrivalScheduled").textContent = '@flight.ArrivalScheduleTime';
-                document.getElementById("departureActual").textContent = '@flight.DepartureActualTime';
-                document.getElementById("arrivalEstimated").textContent = '@flight.ArrivalActualTime';
-                /*document.getElementById("distanceCovered")
-                document.getElementById("aircraftType")
-                document.getElementById("registration")
-                document.getElementById("calibratedAlt")
-                document.getElementById("groundSpeed");
-                document.getElementById("wind");*/
-                alert("I am marker " + '@flight.Aircraft.Name');
+        google.maps.event.addDomListener(marker, 'click', function () {
 
-                if(line != null)
-                    line.setMap(null);
-                
-                var lineCoordinates = [
-                    new google.maps.LatLng('@flight.DepartureAirport.Latitude', '@flight.DepartureAirport.Longitude'),
-                    new google.maps.LatLng('@flight.ArrivalAirport.Latitude', '@flight.ArrivalAirport.Longitude')
-                ];
-                line = new google.maps.Polyline({
-                    path: lineCoordinates,
-                    geodesic: true,
-                    strokeColor: '#FF0000',
-                    strokeOpacity: 1.0,
-                    strokeWeight: 2
-                });
+            document.getElementById("aircraftImage").src = "/Content/Images/" + '@flight.Aircraft.ImageName';
+            document.getElementById("airportOrigin").textContent = '@flight.DepartureAirport.AirportName';
+            document.getElementById("airportDestination").textContent = '@flight.ArrivalAirport.AirportName';
+            document.getElementById("departureScheduled").textContent = '@flight.DepartureScheduleTime';
+            document.getElementById("arrivalScheduled").textContent = '@flight.ArrivalScheduleTime';
+            document.getElementById("departureActual").textContent = '@flight.DepartureActualTime';
+            document.getElementById("arrivalEstimated").textContent = '@flight.ArrivalActualTime';
+            /*document.getElementById("distanceCovered")
+            document.getElementById("aircraftType")
+            document.getElementById("registration")
+            document.getElementById("calibratedAlt")
+            document.getElementById("groundSpeed");
+            document.getElementById("wind");*/
+            alert("I am marker " + '@flight.Aircraft.Name');
 
-                line.setMap(map);
+            if (line != null)
+                line.setMap(null);
+
+            var lineCoordinates = [
+                new google.maps.LatLng('@flight.DepartureAirport.Latitude', '@flight.DepartureAirport.Longitude'),
+                new google.maps.LatLng('@flight.ArrivalAirport.Latitude', '@flight.ArrivalAirport.Longitude')
+            ];
+            line = new google.maps.Polyline({
+                path: lineCoordinates,
+                geodesic: true,
+                strokeColor: '#FF0000',
+                strokeOpacity: 1.0,
+                strokeWeight: 2
             });
-            </text>
+
+            line.setMap(map);
+        });
+        </text>
         }
+
+        @foreach (var aircraft in aircrafts) {
+            
+        <text>
+        @*alert('@aircraft.Name' + ' ' + '@aircraft.Code');*@
+        
+
+        </text> 
+         }
 
     }
 </script>

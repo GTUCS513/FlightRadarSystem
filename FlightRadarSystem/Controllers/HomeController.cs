@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Net;
+using System.IO;
 
 namespace FlightRadarSystem.Controllers
 {
@@ -17,6 +19,7 @@ namespace FlightRadarSystem.Controllers
             InitializeData();
             ViewData["Flights"] = flights;
             ViewData["Airports"] = airports;
+            ViewData["Aircrafts"] = aircrafts;
             return View();
         }
 
@@ -45,7 +48,7 @@ namespace FlightRadarSystem.Controllers
             airports.Add(new Models.Airport("Ankara Esenboga International Airport", Models.Enum.Country.Turkey, 40.1244, 32.9917));
             airports.Add(new Models.Airport("JFK Airport", Models.Enum.Country.USA, 40.64416666, -73.78222));
 
-            aircrafts.Add(new Models.Aircraft("Turkish Airlanes","TK / THY","A319","anadolujet.jpg"));
+            aircrafts.Add(new Models.Aircraft("Turkish Airlines","TK / THY","A319","anadolujet.jpg"));
             aircrafts.Add(new Models.Aircraft("Pegasus Airlines", "PC / PGT", "A320","turkishairlines.jpg"));
             
             flights.Add(new Models.Flight(aircrafts[0],new DateTime(2017,12,7,23,22,38),new DateTime(2017,12,7,1,10,0),airports[0],airports[1],"ABCDE"));
@@ -56,6 +59,8 @@ namespace FlightRadarSystem.Controllers
             flights[1].Longitude = -25.5698;
             flights[2].Longitude = 85.5698;
 
+            flights.AddRange(Models.DataRetriever.RetrieveFlights());
+            
         }
     }
 }

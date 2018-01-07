@@ -4,9 +4,19 @@ using System.Linq;
 using System.Web;
 
 namespace FlightRadarSystem.Models
-{
+{   
+
     public class Airport
     {
+
+        private string airportName;
+        private Enum.Country country;
+        private int weather;
+        private int wind;
+        private double latitude;
+        private double longitude;
+
+
         public Airport(string airportName, Enum.Country country, double lat, double log)
         {
             this.airportName = airportName;
@@ -15,7 +25,7 @@ namespace FlightRadarSystem.Models
             this.longitude = log;
         }
 
-        private string airportName;
+        
 
         public string AirportName
         {
@@ -23,7 +33,7 @@ namespace FlightRadarSystem.Models
             set { airportName = value; }
         }
 
-        private Enum.Country country;
+        
 
         public Enum.Country Country
         {
@@ -31,7 +41,7 @@ namespace FlightRadarSystem.Models
             set { country = value; }
         }
 
-        private int weather;
+        
 
         public int Weather
         {
@@ -39,7 +49,7 @@ namespace FlightRadarSystem.Models
             set { weather = value; }
         }
 
-        private int wind;
+        
 
         public int Wind
         {
@@ -47,7 +57,7 @@ namespace FlightRadarSystem.Models
             set { wind = value; }
         }
 
-        private double latitude;
+        
 
         public double Latitude
         {
@@ -55,7 +65,7 @@ namespace FlightRadarSystem.Models
             set { latitude = value; }
         }
 
-        private double longitude;
+        
 
         public double Longitude
         {
