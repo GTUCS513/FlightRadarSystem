@@ -10,22 +10,31 @@ namespace FlightRadarSystem.Models
     {
 
         private string airportName;
-        private Enum.Country country;
+        private string country;
         private int weather;
         private int wind;
         private double latitude;
         private double longitude;
+        public string city { get; set; }
+        public string alias { get; set; }
 
 
-        public Airport(string airportName, Enum.Country country, double lat, double log)
+        public Airport() : this("Esenboğa", "Turkey", 0, 0) { }
+        public Airport(String name) : this(name, "Turkey", 0, 0) { }
+
+        public Airport(string airportName, string country, double lat, double lon):this(airportName,"","",country, lat,lon)
+        {}
+
+        public Airport(string airportName, string alias, string city, string country, double lat, double lon)
         {
             this.airportName = airportName;
+            this.alias = alias;
+            this.city = city;
             this.country = country;
             this.latitude = lat;
-            this.longitude = log;
+            this.longitude = lon;
         }
 
-        
 
         public string AirportName
         {
@@ -35,7 +44,7 @@ namespace FlightRadarSystem.Models
 
         
 
-        public Enum.Country Country
+        public string Country
         {
             get { return country; }
             set { country = value; }

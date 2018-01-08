@@ -15,14 +15,16 @@ namespace FlightRadarSystem.Models
         public static List<Models.Flight> RetrieveFlights() {
             List<Models.Flight> flights = new List<Models.Flight>(); 
 
-            flights.AddRange(RetrieveAirportFlights("http://www.esenbogaairport.com/en-EN/flightinfo/Pages/Arrival.aspx"));
-                        
+            flights.AddRange(RetrieveAirportFlights("http://www.esenbogaairport.com/en-EN/flightinfo/Pages/Arrival.aspx", false, false)); // international arrival
+            flights.AddRange(RetrieveAirportFlights("http://www.esenbogaairport.com/en-en/flightinfo/pages/arrival1.aspx", false, true)); // domestic arrival
+            flights.AddRange(RetrieveAirportFlights("http://www.esenbogaairport.com/en-en/flightinfo/pages/Departure.aspx", true, false));  //international departure
+            flights.AddRange(RetrieveAirportFlights("http://www.esenbogaairport.com/en-en/flightinfo/pages/departure.aspx", true, true)); // domestic departure
 
             return flights;
 
         }
 
-        public static List<Models.Flight> RetrieveAirportFlights(String url) {
+        public static List<Models.Flight> RetrieveAirportFlights(String url, bool isDeparture, bool isDomestic) {
 
             List<Models.Flight> flights = new List<Models.Flight>();
 
@@ -33,7 +35,6 @@ namespace FlightRadarSystem.Models
 
             HtmlNode[] trNodes = node.SelectNodes(".//tr").ToArray();
 
-            String output = "";
             String innerhtml = "";
 
             for (int i = 0; i < trNodes.Length; i++)
@@ -67,13 +68,10 @@ namespace FlightRadarSystem.Models
 
                     flightInfo[j] = innerhtml == null ? null : innerhtml.Trim();
 
-                    //if (innerhtml.CompareTo("") != 0)
-                    output += "\n i = " + i + " j = " + j + " " + innerhtml;
 
                 }
 
-                //String[] dateElem = new String[3];
-                //dateElem = flightInfo[0].Split('.');
+                //Date	Schedule	Estimated	Actual	Airline	Flight Number	Arrival	Remark	Carousel
 
                 DateTime date = flightInfo[0].Equals("") ? new DateTime() : DateTime.ParseExact(flightInfo[0], "dd.MM.yyyy", CultureInfo.InvariantCulture);
 
@@ -87,14 +85,14 @@ namespace FlightRadarSystem.Models
                 String status = flightInfo[7];
                 int gate = flightInfo[8].Equals("") ? -1 : Int32.Parse(flightInfo[8]);
 
+                Models.Flight flight;
+                if (isDeparture)
+                    flight = new Flight(new Aircraft(), schedule, estimated, new Airport("Esenboğa"), new Airport(destination), null);
+                else
+                    flight = new Flight(new Aircraft() , schedule, estimated, new Airport(destination), new Airport("Esenboğa"), null);
 
-                Models.Flight flight = new Flight(new Aircraft() , schedule, estimated, new Airport("Esenboğa", Enum.Country.Turkey, 0, 0), new Airport(destination, 0, 0, 0), null);
                 flights.Add(flight);
             }
-
-            //Date	Schedule	Estimated	Actual	Airline	Flight Number	Arrival	Remark	Carousel
-
-            Console.WriteLine(output);
 
             return flights;
         } 

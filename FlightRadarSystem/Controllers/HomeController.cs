@@ -44,9 +44,9 @@ namespace FlightRadarSystem.Controllers
 
         public void InitializeData()
         {
-            airports.Add(new Models.Airport("Adana Sakirpasa Airport", Models.Enum.Country.Turkey, 36.97582943, 35.274832234));
-            airports.Add(new Models.Airport("Ankara Esenboga International Airport", Models.Enum.Country.Turkey, 40.1244, 32.9917));
-            airports.Add(new Models.Airport("JFK Airport", Models.Enum.Country.USA, 40.64416666, -73.78222));
+            airports.Add(new Models.Airport("Adana Sakirpasa Airport", "Turkey", 36.97582943, 35.274832234));
+            airports.Add(new Models.Airport("Ankara Esenboga International Airport", "Turkey", 40.1244, 32.9917));
+            airports.Add(new Models.Airport("JFK Airport", "USA", 40.64416666, -73.78222));
 
             aircrafts.Add(new Models.Aircraft("Turkish Airlines","TK / THY","A319","anadolujet.jpg"));
             aircrafts.Add(new Models.Aircraft("Pegasus Airlines", "PC / PGT", "A320","turkishairlines.jpg"));
@@ -60,6 +60,9 @@ namespace FlightRadarSystem.Controllers
             flights[2].Longitude = 85.5698;
 
             flights.AddRange(Models.DataRetriever.RetrieveFlights());
+            
+            airports.AddRange(Models.Database.getInstance().getAirports());
+
             
         }
     }
