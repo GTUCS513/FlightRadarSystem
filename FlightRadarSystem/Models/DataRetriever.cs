@@ -11,20 +11,24 @@ namespace FlightRadarSystem.Models
 {
     public class DataRetriever
     {
-
         public static List<Models.Flight> RetrieveFlights() {
+            return RetrieveFlights(null);
+        }
+
+        public static List<Models.Flight> RetrieveFlights(List<Models.Airport> airports) {
             List<Models.Flight> flights = new List<Models.Flight>(); 
 
-            flights.AddRange(RetrieveAirportFlights("http://www.esenbogaairport.com/en-EN/flightinfo/Pages/Arrival.aspx", false, false)); // international arrival
-            flights.AddRange(RetrieveAirportFlights("http://www.esenbogaairport.com/en-en/flightinfo/pages/arrival1.aspx", false, true)); // domestic arrival
-            flights.AddRange(RetrieveAirportFlights("http://www.esenbogaairport.com/en-en/flightinfo/pages/Departure.aspx", true, false));  //international departure
-            flights.AddRange(RetrieveAirportFlights("http://www.esenbogaairport.com/en-en/flightinfo/pages/departure.aspx", true, true)); // domestic departure
+            flights.AddRange(RetrieveAirportFlights("http://www.esenbogaairport.com/en-EN/flightinfo/Pages/Arrival.aspx", false, false, airports)); // international arrival
+            flights.AddRange(RetrieveAirportFlights("http://www.esenbogaairport.com/en-en/flightinfo/pages/arrival1.aspx", false, true, airports)); // domestic arrival
+            flights.AddRange(RetrieveAirportFlights("http://www.esenbogaairport.com/en-en/flightinfo/pages/Departure.aspx", true, false, airports));  //international departure
+            flights.AddRange(RetrieveAirportFlights("http://www.esenbogaairport.com/en-en/flightinfo/pages/departure.aspx", true, true, airports)); // domestic departure
 
             return flights;
 
         }
 
-        public static List<Models.Flight> RetrieveAirportFlights(String url, bool isDeparture, bool isDomestic) {
+        public static List<Models.Flight> RetrieveAirportFlights(String url, bool isDeparture, bool isDomestic, List<Models.Airport> airports)
+        {
 
             List<Models.Flight> flights = new List<Models.Flight>();
 
@@ -86,10 +90,19 @@ namespace FlightRadarSystem.Models
                 int gate = flightInfo[8].Equals("") ? -1 : Int32.Parse(flightInfo[8]);
 
                 Models.Flight flight;
+                Airport ap1 = airports.Find(x => x.city.Equals("Ankara", StringComparison.InvariantCultureIgnoreCase));                 
+                ap1 = ap1 == null ? new Airport("ESB"):ap1;
+
+                Airport ap2 = airports.Find(x => x.alias.Contains(destination));
+                ap2 = ap2 == null ? airports.Find(x => x.AirportName.Equals(destination, StringComparison.InvariantCultureIgnoreCase)) : ap2;
+                ap2 = ap2 == null ? airports.Find(x => x.city.Equals(destination, StringComparison.InvariantCultureIgnoreCase)) : ap2;
+                ap2 = ap2 == null ? new Airport(destination) : ap2;
+                
+
                 if (isDeparture)
-                    flight = new Flight(new Aircraft(), schedule, estimated, new Airport("Esenboğa"), new Airport(destination), null);
+                    flight = new Flight(new Aircraft(), schedule, estimated, ap1, ap2, "");
                 else
-                    flight = new Flight(new Aircraft() , schedule, estimated, new Airport(destination), new Airport("Esenboğa"), null);
+                    flight = new Flight(new Aircraft() , schedule, estimated, ap2, ap1, "");
 
                 flights.Add(flight);
             }

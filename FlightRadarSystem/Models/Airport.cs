@@ -4,9 +4,9 @@ using System.Linq;
 using System.Web;
 
 namespace FlightRadarSystem.Models
-{   
+{
 
-    public class Airport
+    public class Airport : IEquatable<Airport>
     {
 
         private string airportName;
@@ -34,6 +34,7 @@ namespace FlightRadarSystem.Models
             this.latitude = lat;
             this.longitude = lon;
         }
+             
 
 
         public string AirportName
@@ -42,7 +43,34 @@ namespace FlightRadarSystem.Models
             set { airportName = value; }
         }
 
-        
+
+        public bool Equals(Airport other)
+        {
+            return this.Equals((object)other);
+        }
+
+
+        public override bool Equals(object obj) {
+            // STEP 1: Check for null if nullable (e.g., a reference type)
+            if (obj == null)
+            {
+                return false;
+            }
+            // STEP 2: Check for ReferenceEquals if this is a reference type
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            // STEP 3: equivalent data types
+            if (this.GetType() != obj.GetType())
+            {
+                return false;
+            }            
+
+            // STEP 6: Compare identifying fields for equality.
+            return this.alias.Equals(((Airport)obj).alias) || this.airportName.Equals(((Airport)obj).airportName);
+        }
 
         public string Country
         {
@@ -86,6 +114,7 @@ namespace FlightRadarSystem.Models
         {
             get { return "http://maps.google.com/mapfiles/kml/paddle/blu-blank.png"; }
         }
-            
+
+
     }
 }

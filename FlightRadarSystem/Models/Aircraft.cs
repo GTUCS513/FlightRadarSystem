@@ -17,13 +17,13 @@ namespace FlightRadarSystem.Models
         public static String defaultImageName = "turkishairlines.jpg";
 
         public Aircraft()
-            : this("", "", "", defaultImageName)
+            : this("Turkish Airlines", "TK / THY", "A319", defaultImageName)
         {
            
         }
 
         public Aircraft(String name)
-            : this(name, "", "", defaultImageName)
+            : this(name, "TK / THY", "A319", defaultImageName)
         {
 
         }
@@ -38,11 +38,21 @@ namespace FlightRadarSystem.Models
 
         public Aircraft(int aircraftid)
         {
-            String[] info = Database.getInstance().getAircraft(1);
-            this.name = info[0];
-            this.type = info[1];
-            this.code = info[2];
-            this.imageName = info[3];
+            String[] info = Database.getInstance().getAircraft(aircraftid);
+            if (info == null || info.Length < 4)
+            {
+                this.name = "Turkish Airlines";
+                this.type = "TK / THY";
+                this.code = "A319";
+                this.imageName = defaultImageName;
+            }
+            else
+            {
+                this.name = info[0];
+                this.type = info[1];
+                this.code = info[2];
+                this.imageName = info[3];
+            }
 
         }
         

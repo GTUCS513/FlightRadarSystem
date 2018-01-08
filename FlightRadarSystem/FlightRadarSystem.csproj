@@ -184,6 +184,7 @@
     <Compile Include="Models\Enum.cs" />
     <Compile Include="Models\FileReader.cs" />
     <Compile Include="Models\Flight.cs" />
+    <Compile Include="Models\MainModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>

@@ -14,6 +14,7 @@ namespace FlightRadarSystem.Models
         public static bool connection_open{get;set;}
         private static MySqlConnection connection;
         private static Database db;
+        private static List<Models.Airport> airports;
 
         //Singleton pattern
         private Database()
@@ -91,7 +92,8 @@ namespace FlightRadarSystem.Models
 
         public List<Models.Airport> getAirports()
         {
-            List<Models.Airport> airports = new List<Models.Airport>();
+            if (airports == null)
+                airports = new List<Models.Airport>();
 
             try
             {
@@ -115,6 +117,7 @@ namespace FlightRadarSystem.Models
                             cols[i] = reader.GetString(i);
                         }
 
+                        //todo: check if there exists an airport with the same id already. use contains and implement  new IEqualityComparer for Airport object
                         ap = new Airport(cols[1], cols[2], cols[3], cols[4], Double.Parse(cols[5]), Double.Parse(cols[6]));
                         airports.Add(ap);
                     }

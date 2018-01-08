@@ -10,16 +10,19 @@ namespace FlightRadarSystem.Controllers
 {
     public class HomeController : Controller
     {
-        List<Models.Flight> flights = new List<Models.Flight>();
-        List<Models.Airport> airports = new List<Models.Airport>();
-        List<Models.Aircraft> aircrafts = new List<Models.Aircraft>();
+        private Models.MainModel mm;
+
+        public HomeController()
+        {
+            mm = new Models.MainModel(this);
+        }
 
         public ActionResult Index()
         {
             InitializeData();
-            ViewData["Flights"] = flights;
-            ViewData["Airports"] = airports;
-            ViewData["Aircrafts"] = aircrafts;
+            ViewData["Flights"] = mm.flights;
+            ViewData["Airports"] = mm.airports;
+            ViewData["Aircrafts"] = mm.aircrafts;
             return View();
         }
 
@@ -44,25 +47,24 @@ namespace FlightRadarSystem.Controllers
 
         public void InitializeData()
         {
-            airports.Add(new Models.Airport("Adana Sakirpasa Airport", "Turkey", 36.97582943, 35.274832234));
-            airports.Add(new Models.Airport("Ankara Esenboga International Airport", "Turkey", 40.1244, 32.9917));
-            airports.Add(new Models.Airport("JFK Airport", "USA", 40.64416666, -73.78222));
+            //airports.Add(new Models.Airport("Adana Sakirpasa Airport", "Turkey", 36.97582943, 35.274832234));
+            //airports.Add(new Models.Airport("Ankara Esenboga International Airport", "Turkey", 40.1244, 32.9917));
+            //airports.Add(new Models.Airport("JFK Airport", "USA", 40.64416666, -73.78222));
 
-            aircrafts.Add(new Models.Aircraft("Turkish Airlines","TK / THY","A319","anadolujet.jpg"));
-            aircrafts.Add(new Models.Aircraft("Pegasus Airlines", "PC / PGT", "A320","turkishairlines.jpg"));
+            mm.aircrafts.Add(new Models.Aircraft("Turkish Airlines","TK / THY","A319","anadolujet.jpg"));
+            mm.aircrafts.Add(new Models.Aircraft("Pegasus Airlines", "PC / PGT", "A320","turkishairlines.jpg"));
             
-            flights.Add(new Models.Flight(aircrafts[0],new DateTime(2017,12,7,23,22,38),new DateTime(2017,12,7,1,10,0),airports[0],airports[1],"ABCDE"));
-            flights.Add(new Models.Flight(aircrafts[0], new DateTime(2017, 12, 30, 12, 22, 45), new DateTime(2017, 12, 30, 14, 0, 0), airports[1], airports[2], "ADE"));
-            flights.Add(new Models.Flight(aircrafts[1], new DateTime(2017, 12, 10, 1, 50, 0), new DateTime(2017, 12, 11, 10, 10, 0), airports[0], airports[2], "CDE"));
+            //mm.flights.Add(new Models.Flight(mm.aircrafts[0],new DateTime(2017,12,7,23,22,38),new DateTime(2017,12,7,1,10,0),mm.airports[0],mm.airports[1],"ABCDE"));
+            //mm.flights.Add(new Models.Flight(mm.aircrafts[0], new DateTime(2017, 12, 30, 12, 22, 45), new DateTime(2017, 12, 30, 14, 0, 0), mm.airports[1], mm.airports[2], "ADE"));
+            //mm.flights.Add(new Models.Flight(mm.aircrafts[1], new DateTime(2017, 12, 10, 1, 50, 0), new DateTime(2017, 12, 11, 10, 10, 0), mm.airports[0], mm.airports[2], "CDE"));
 
-            flights[0].Longitude = 55.5698;
-            flights[1].Longitude = -25.5698;
-            flights[2].Longitude = 85.5698;
-
-            flights.AddRange(Models.DataRetriever.RetrieveFlights());
+            //mm.flights[0].Longitude = 55.5698;
+            //mm.flights[1].Longitude = -25.5698;
+            //mm.flights[2].Longitude = 85.5698;
+                        
             
-            airports.AddRange(Models.Database.getInstance().getAirports());
-
+            mm.airports.AddRange(Models.Database.getInstance().getAirports());
+            mm.flights.AddRange(Models.DataRetriever.RetrieveFlights(mm.airports));
             
         }
     }
