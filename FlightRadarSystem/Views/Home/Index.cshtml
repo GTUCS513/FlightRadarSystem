@@ -73,11 +73,7 @@
 
 
     </div>
-    <div id="aircraftsview">
-        <p>
-        @ViewBag.Message
-        <p>
-        </div>
+    
 </div>
 
 
@@ -86,31 +82,34 @@
     @(Html.GoogleMap().ScriptRegistrar())
 }
 
+<script type="text/javascript">
+    $(function () {
+
+        @{flights = (List<FlightRadarSystem.Models.Flight>)ViewData["Flights"];}
+
+        setInterval(LoadMap, 900000);  // invoke load every 15 min
+        LoadMap(); // load on initial page loaded
+        
+
+    });
+</script>
 
 <script>
 
 
     function LoadMap() {
 
-
+        //alert("Map loaded");
         var locations = [];
 
         var mapCanvas = document.getElementById("map");
-        var myCenter = new google.maps.LatLng(20.296100, 85.824500);
-        var myCenter1 = new google.maps.LatLng(25.296100, 85.824500);
-        var mapOptions = { center: myCenter, zoom: 12 };
+        //var myCenter = new google.maps.LatLng(40.1244, 32.9917);
+        var myCenter1 = new google.maps.LatLng(40.1244, 32.9917);
+        var mapOptions = { center: myCenter1, zoom: 6 };
         var map = new google.maps.Map(mapCanvas, mapOptions);
         var line;
-        //locations.push(myCenter);
-        //var myCenter1 = new google.maps.LatLng(myVar1, myVar2);
         locations.push(myCenter1);
-        /*for (var i = 0; i < locations.length; i++) {
-            var marker = new google.maps.Marker({
-                position: locations[i],
-                icon: "/airplane.png"
-            });
-            marker.setMap(map);
-        }*/
+       
         @foreach(var airport in airports)
         {
             <text>
@@ -118,14 +117,14 @@
         var marker = new google.maps.Marker({
             icon: '@airport.Icon',
             position: new google.maps.LatLng('@airport.Latitude', '@airport.Longitude', false),
-            title: 'Whatever title',
+            title: '@airport.alias',
         });
         marker.setMap(map);
         google.maps.event.addDomListener(marker, 'click', function () {
 
             document.getElementById("aircraftImage").src = "/Content/Images/anadolujet.jpg";
 
-            alert("I am marker " + '@airport.Country');
+            alert('@airport.Country' + ":" + '@airport.city');
         });
         </text>
         }
@@ -137,7 +136,7 @@
         var marker = new google.maps.Marker({
             icon: "/airplane.png",
             position: new google.maps.LatLng('@flight.Latitude', '@flight.Longitude', false),
-            title: 'Whatever title',
+            title: '@flight.Status',
         });
         marker.setMap(map);
         google.maps.event.addDomListener(marker, 'click', function () {
@@ -155,7 +154,7 @@
             document.getElementById("calibratedAlt")
             document.getElementById("groundSpeed");
             document.getElementById("wind");*/
-            alert("I am marker " + '@flight.Aircraft.Name');
+            alert('@flight.Aircraft.Name');
 
             if (line != null)
                 line.setMap(null);
@@ -177,14 +176,7 @@
         </text>
         }
 
-        @foreach (var aircraft in aircrafts) {
-            
-        <text>
-        @*alert('@aircraft.Name' + ' ' + '@aircraft.Code');*@
         
-
-        </text> 
-         }
 
     }
 </script>

@@ -10,11 +10,20 @@ namespace FlightRadarSystem.Controllers
 {
     public class HomeController : Controller
     {
-        private Models.MainModel mm;
+        private static Models.MainModel mm;
+        public static System.Timers.Timer timer;
 
         public HomeController()
         {
             mm = new Models.MainModel(this);
+            timer = new System.Timers.Timer(15*60*1000); // call every 15 min.
+            timer.Enabled = true;
+            timer.Elapsed += new System.Timers.ElapsedEventHandler(timer_Elapsed);
+        }
+
+        static void timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            mm.flights = Models.DataRetriever.RetrieveFlights(mm.airports);
         }
 
         public ActionResult Index()

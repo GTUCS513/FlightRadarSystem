@@ -90,6 +90,7 @@ namespace FlightRadarSystem.Models
             }
         }
 
+        //airport list is retrieved from https://openflights.org/data.html and stored into airports table of mysql flightradar schema
         public List<Models.Airport> getAirports()
         {
             if (airports == null)
